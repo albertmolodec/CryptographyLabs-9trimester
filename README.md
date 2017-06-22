@@ -13,4 +13,4 @@ SOURCES
 3_DES:
   1) AES/DES alghs: https://www.cryptopp.com/wiki/Advanced_Encryption_Standard
                     https://www.cryptopp.com/wiki/TripleDES
-  2) 
+  2) ArraySink, ArraySource, Redirector: https://www.cryptopp.com/wiki/ArraySource
