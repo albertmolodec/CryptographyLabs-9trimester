@@ -52,6 +52,7 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 .vs/
+.vs/MyCry/v14
 
 #Nuget packages folder
 packages/
