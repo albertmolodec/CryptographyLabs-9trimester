@@ -122,3 +122,29 @@ bool File_Exists(LPCTSTR path)
 	}
 	return false;
 }
+
+void Open_Message(MyFile &file, std::string path)
+{
+	if (!file.Open(path))
+	{
+		std::cout << "File " << path << " couldn't be opened." << std::endl;
+		return;
+	}
+	else
+	{
+		std::cout << "File " << path << " opened." << std::endl;
+	}
+}
+
+void Write_Message(MyFile &file, std::string path, std::string type)
+{
+	if (!file.Write(path))
+	{
+		std::cout << type << " generation failed." << std::endl;
+		return;
+	}
+	else
+	{
+		std::cout << type << " generation successful." << std::endl;
+	}
+}
