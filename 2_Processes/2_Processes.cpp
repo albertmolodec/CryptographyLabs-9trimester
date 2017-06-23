@@ -6,15 +6,14 @@
 
 VOID ProcessInfo(std::map <int, std::string> &map) // 
 {
-	PROCESSENTRY32 pe; // process entry
-	HANDLE CONST snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0); // create handle of snapshot. TH32CS_SNAPPROCESS - Process list
+	PROCESSENTRY32 pe;
+	HANDLE CONST snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 	pe.dwSize = sizeof(PROCESSENTRY32);
 	Process32First(snapshot, &pe);
 	char buf[100];
 	do
 	{
-		wcstombs(buf, pe.szExeFile, sizeof(pe.szExeFile)); // szExeFile - name of Process
-														   // wcstombs - Convert wchar* to char*
+		wcstombs(buf, pe.szExeFile, sizeof(pe.szExeFile));
 		std::string conv_name = buf;
 		map.insert(std::pair <int, std::string>(pe.th32ProcessID, conv_name));
 	} while (Process32Next(snapshot, &pe));

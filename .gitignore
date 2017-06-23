@@ -53,9 +53,11 @@ obj/
 _ReSharper*/
 .vs/
 .vs/MyCry/v14
+readme.txt
 
 #Nuget packages folder
 packages/
+
 shared/key.docx
 shared/decryptedtext.docx
 shared/ciphertext.docx
