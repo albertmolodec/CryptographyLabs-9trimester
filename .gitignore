@@ -289,8 +289,7 @@ stdafx.*
 targetver.*
 ReadMe.*
 
-
-shared/key.docx
 shared/decryptedtext.docx
 shared/ciphertext.docx
-shared/iv.docx
+shared/key.*
+shared/iv.*
