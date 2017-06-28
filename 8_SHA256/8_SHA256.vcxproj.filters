@@ -22,4 +22,7 @@
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\third-party\lib\cryptlib.lib" />
+  </ItemGroup>
 </Project>
