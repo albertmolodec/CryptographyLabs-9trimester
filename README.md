@@ -14,3 +14,7 @@ SOURCES
   1) AES/DES alghs: https://www.cryptopp.com/wiki/Advanced_Encryption_Standard
                     https://www.cryptopp.com/wiki/TripleDES
   2) ArraySink, ArraySource, Redirector: https://www.cryptopp.com/wiki/ArraySource
+
+6_RSA:
+  1) General description of RSA: https://www.cryptopp.com/wiki/RSA_Encryption_Schemes#RSA_Encryption_Scheme_.28OAEP_and_SHA.29
+  2) Some functions: https://github.com/DF4IAH/xy1en1om/blob/master/Bazaar/tools/encoder/encoder.cpp
