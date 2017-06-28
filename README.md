@@ -18,3 +18,9 @@ SOURCES
 6_RSA:
   1) General description of RSA: https://www.cryptopp.com/wiki/RSA_Encryption_Schemes#RSA_Encryption_Scheme_.28OAEP_and_SHA.29
   2) Some functions: https://github.com/DF4IAH/xy1en1om/blob/master/Bazaar/tools/encoder/encoder.cpp
+
+7_Hash:
+  1) Some simple hash functions with c++ listings and collision histogram: https://habrahabr.ru/post/219139/
+  
+8_SHA256:
+  1) Encryption&Decryption code: http://www.cplusplus.com/forum/beginner/60604/
