@@ -1,0 +1,18 @@
+Entropy of plain text:
+	8 bit: 2.66667
+	16 bit: 3.61792
+	16 bit (with overlay): 3.6697
+Entropy of hashed file (by my function):
+	8 bit: 2.66667
+	16 bit: 3.91972
+	16 bit (with overlay): 3.96267
+Entropy of hashed file (by SHA256): 
+	8 bit: 2.66667
+	16 bit: 1.99988
+	16 bit (with overlay): 1.99988
+
+Compression ratio of compressed plain text: 15.6786%
+
+Compression ratio of compressed hashed file (by my function): 2.0093%
+
+Compression ratio of compressed hashed file (by SHA256): 42.8296%

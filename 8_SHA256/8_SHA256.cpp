@@ -4,7 +4,7 @@
 #include "..\third-party\src\CryptoPP\osrng.h"
 #include "..\third-party\src\CryptoPP\hex.h"
 #include "..\third-party\src\CryptoPP\base64.h"
-#include <iomanip>
+#include "..\third-party\src\Zip\zip.h"
 
 
 class SHA256
@@ -12,7 +12,7 @@ class SHA256
 private:
 	MyFile plaintext;
 	MyFile hash;
-	std::string plaintext_path = "../shared/plaintext.docx";
+	std::string plaintext_path = "../shared/plaintext.doc";
 	std::string hash_path = "../shared/hash_SHA256.txt";
 public:
 	void Generate_Hash_SHA256()

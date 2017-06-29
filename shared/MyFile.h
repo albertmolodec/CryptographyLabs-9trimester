@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <windows.h>
 #include <conio.h>
+#include <math.h>
 
 
 #pragma warning(disable : 4996)
@@ -29,6 +30,7 @@ public:
 
 	~MyFile() 
 	{
+		_data.clear();
 	}
 
 	std::vector <unsigned char> &GetData() 
@@ -148,3 +150,4 @@ void Write_Message(MyFile &file, std::string path, std::string type)
 		std::cout << type << " generation successful." << std::endl;
 	}
 }
+
