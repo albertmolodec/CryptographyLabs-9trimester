@@ -188,7 +188,6 @@ int main()
 	std::string process_time = std::to_string(Get_Time(begin_time, end_time));
 	std::cout << "RSA encryption and decryption completed. Time = " << process_time << " seconds." << std::endl;
 
-
 	system("pause");
 	return 0;
 }

@@ -39,7 +39,7 @@ public:
 		std::cin >> mode;
 		Clear_Screen();
 
-		Open_Message(plaintext, plaintext_path);
+		MyFile::Open_Message(plaintext, plaintext_path);
 
 		byte key_bytes[CryptoPP::DES::DEFAULT_KEYLENGTH];
 		byte iv_bytes[CryptoPP::DES::BLOCKSIZE];
@@ -108,7 +108,7 @@ public:
 		}
 		ciphertext.GetData().resize(cs.TotalPutLength());
 
-		Write_Message(ciphertext, ciphertext_path, "Cipher text");
+		MyFile::Write_Message(ciphertext, ciphertext_path, "Cipher text");
 		return mode;
 	}
 
@@ -117,7 +117,7 @@ public:
 		byte random_key[CryptoPP::DES::DEFAULT_KEYLENGTH];
 		byte random_iv[CryptoPP::DES::BLOCKSIZE];
 
-		Open_Message(ciphertext, ciphertext_path);
+		MyFile::Open_Message(ciphertext, ciphertext_path);
 
 		decryptedtext.GetData().resize(ciphertext.GetData().size() + CryptoPP::DES::BLOCKSIZE);
 		CryptoPP::ArraySink ds(&decryptedtext.GetData()[0], decryptedtext.GetData().size());
@@ -176,7 +176,7 @@ public:
 		}
 		decryptedtext.GetData().resize(ds.TotalPutLength());
 
-		Write_Message(decryptedtext, decryptedtext_path, "Decrypted text ");
+		MyFile::Write_Message(decryptedtext, decryptedtext_path, "Decrypted text ");
 	}
 
 	void Get_Obj(byte *random_obj, std::string type)
@@ -194,7 +194,7 @@ public:
 			obj_path = iv_path;
 		}
 
-		Open_Message(obj, obj_path);
+		MyFile::Open_Message(obj, obj_path);
 
 		if (type == "Key")
 		{
@@ -222,7 +222,7 @@ public:
 			{
 				key.GetData().push_back(obj_bytes[i]);
 			}
-			Write_Message(key, key_path, "Key");
+			MyFile::Write_Message(key, key_path, "Key");
 		}
 		else if (type == "IV")
 		{
@@ -232,7 +232,7 @@ public:
 			{
 				iv.GetData().push_back(obj_bytes[i]);
 			}
-			Write_Message(iv, iv_path, "IV");
+			MyFile::Write_Message(iv, iv_path, "IV");
 		}
 		else
 		{
@@ -274,7 +274,7 @@ public:
 		std::cin >> mode;
 		Clear_Screen();
 
-		Open_Message(plaintext, plaintext_path);
+		MyFile::Open_Message(plaintext, plaintext_path);
 
 		byte key_bytes[CryptoPP::DES_EDE3::DEFAULT_KEYLENGTH];
 		byte iv_bytes[CryptoPP::DES_EDE3::BLOCKSIZE];
@@ -343,7 +343,7 @@ public:
 		}
 		ciphertext.GetData().resize(cs.TotalPutLength());
 
-		Write_Message(ciphertext, ciphertext_path, "Cipher text");
+		MyFile::Write_Message(ciphertext, ciphertext_path, "Cipher text");
 		return mode;
 	}
 
@@ -352,7 +352,7 @@ public:
 		byte random_key[CryptoPP::DES_EDE3::DEFAULT_KEYLENGTH];
 		byte random_iv[CryptoPP::DES_EDE3::BLOCKSIZE];
 
-		Open_Message(ciphertext, ciphertext_path);
+		MyFile::Open_Message(ciphertext, ciphertext_path);
 
 		decryptedtext.GetData().resize(ciphertext.GetData().size() + CryptoPP::DES_EDE3::BLOCKSIZE);
 		CryptoPP::ArraySink ds(&decryptedtext.GetData()[0], decryptedtext.GetData().size());
@@ -411,7 +411,7 @@ public:
 		}
 		decryptedtext.GetData().resize(ds.TotalPutLength());
 
-		Write_Message(decryptedtext, decryptedtext_path, "Decrypted text ");
+		MyFile::Write_Message(decryptedtext, decryptedtext_path, "Decrypted text ");
 	}
 
 	void Get_Obj(byte *random_obj, std::string type)
@@ -429,7 +429,7 @@ public:
 			obj_path = iv_path;
 		}
 
-		Open_Message(obj, obj_path);
+		MyFile::Open_Message(obj, obj_path);
 
 		if (type == "Key")
 		{
@@ -457,7 +457,7 @@ public:
 			{
 				key.GetData().push_back(obj_bytes[i]);
 			}
-			Write_Message(key, key_path, "Key");
+			MyFile::Write_Message(key, key_path, "Key");
 		}
 		else if (type == "IV")
 		{
@@ -467,7 +467,7 @@ public:
 			{
 				iv.GetData().push_back(obj_bytes[i]);
 			}
-			Write_Message(iv, iv_path, "IV");
+			MyFile::Write_Message(iv, iv_path, "IV");
 		}
 		else
 		{

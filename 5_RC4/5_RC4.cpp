@@ -22,7 +22,7 @@ private:
 
 	void Create_S()
 	{
-		Open_Message(key, key_path);
+		MyFile::Open_Message(key, key_path);
 		for (i = 0; i < s_size; i++)
 		{
 			s[i] = (unsigned char)i;
@@ -65,29 +65,29 @@ public:
 		{
 			key.GetData().push_back((unsigned char)rand() % s_size);
 		}
-		Write_Message(key, key_path, "Key");
+		MyFile::Write_Message(key, key_path, "Key");
 	}
 
 	void Encryption()
 	{
 		Create_S();
-		Open_Message(plaintext, plaintext_path);
+		MyFile::Open_Message(plaintext, plaintext_path);
 		for (int m = 0; m < plaintext.GetData().size(); m++)
 		{
 			ciphertext.GetData().push_back((plaintext.GetData()[m] ^ Generate_Key_i()));
 		}
-		Write_Message(ciphertext, ciphertext_path, "Cipher text");
+		MyFile::Write_Message(ciphertext, ciphertext_path, "Cipher text");
 	}
 
 	void Decryption()
 	{
 		Create_S();
-		Open_Message(ciphertext, ciphertext_path);
+		MyFile::Open_Message(ciphertext, ciphertext_path);
 		for (int m = 0; m < ciphertext.GetData().size(); m++)
 		{
 			decryptedtext.GetData().push_back((ciphertext.GetData()[m] ^ Generate_Key_i()));
 		}
-		Write_Message(decryptedtext, decryptedtext_path, "Decrypted text");
+		MyFile::Write_Message(decryptedtext, decryptedtext_path, "Decrypted text");
 	}
 };
 
@@ -106,5 +106,6 @@ int main()
 	obj.Decryption();
 	system("pause");
 	return 0;
+	
 }
 

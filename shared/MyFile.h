@@ -8,6 +8,7 @@
 #include <windows.h>
 #include <conio.h>
 #include <math.h>
+#include <thread>
 
 
 #pragma warning(disable : 4996)
@@ -23,19 +24,19 @@ private:
 	FILE* _file;
 
 public:
-	MyFile(): _file(NULL)
+	MyFile() : _file(NULL)
 	{
 
 	}
 
-	~MyFile() 
+	~MyFile()
 	{
 		_data.clear();
 	}
 
-	std::vector <unsigned char> &GetData() 
-	{ 
-		return _data; 
+	std::vector <unsigned char> &GetData()
+	{
+		return _data;
 	}
 
 	bool Open(std::string &name)
@@ -53,7 +54,7 @@ public:
 		}
 		return !_data.empty();
 	}
-		
+
 	bool Write(std::string &name)
 	{
 		_file = fopen(name.c_str(), "wb");
@@ -66,11 +67,51 @@ public:
 	{
 		fclose(_file);
 	}
-	
+
 	bool Clear_Data()
 	{
 		_data.clear();
 		return !_data.empty();
+	}
+
+	static bool File_Exists(LPCTSTR path)
+	{
+		WIN32_FIND_DATA wfd;
+		HANDLE hFind = ::FindFirstFile(path, &wfd);
+		if (INVALID_HANDLE_VALUE != hFind)
+		{
+			::FindClose(hFind);
+			return true;
+		}
+		return false;
+	}
+
+
+
+	static void Open_Message(MyFile &file, std::string path)
+	{
+		if (!file.Open(path))
+		{
+			std::cout << "File " << path << " couldn't be opened." << std::endl;
+			return;
+		}
+		else
+		{
+			std::cout << "File " << path << " opened." << std::endl;
+		}
+	}
+
+	static void Write_Message(MyFile &file, std::string path, std::string type)
+	{
+		if (!file.Write(path))
+		{
+			std::cout << type << " generation failed." << std::endl;
+			return;
+		}
+		else
+		{
+			std::cout << type << " generation successful." << std::endl;
+		}
 	}
 };
 
@@ -92,7 +133,7 @@ void Clear_Screen()
 
 	if (!GetConsoleScreenBufferInfo(hStdOut, &csbi)) return;
 	cellCount = csbi.dwSize.X *csbi.dwSize.Y;
-	
+
 	if (!FillConsoleOutputCharacter(
 		hStdOut,
 		(TCHAR) ' ',
@@ -101,7 +142,7 @@ void Clear_Screen()
 		&count
 	)) return;
 
-	
+
 	if (!FillConsoleOutputAttribute(
 		hStdOut,
 		csbi.wAttributes,
@@ -113,41 +154,21 @@ void Clear_Screen()
 	SetConsoleCursorPosition(hStdOut, homeCoords);
 }
 
-bool File_Exists(LPCTSTR path)
-{
-	WIN32_FIND_DATA wfd;
-	HANDLE hFind = ::FindFirstFile(path, &wfd);
-	if (INVALID_HANDLE_VALUE != hFind)
-	{
-		::FindClose(hFind);
-		return true;
-	}
-	return false;
-}
 
-void Open_Message(MyFile &file, std::string path)
-{
-	if (!file.Open(path))
-	{
-		std::cout << "File " << path << " couldn't be opened." << std::endl;
-		return;
-	}
-	else
-	{
-		std::cout << "File " << path << " opened." << std::endl;
-	}
-}
 
-void Write_Message(MyFile &file, std::string path, std::string type)
-{
-	if (!file.Write(path))
-	{
-		std::cout << type << " generation failed." << std::endl;
-		return;
-	}
-	else
-	{
-		std::cout << type << " generation successful." << std::endl;
-	}
-}
 
+
+
+
+//void Open_Message(MyFile &file, std::string path)
+//{
+//	if (!file.Open(path))
+//	{
+//		std::cout << "File " << path << " couldn't be opened." << std::endl;
+//		return;
+//	}
+//	else
+//	{
+//		std::cout << "File " << path << " opened." << std::endl;
+//	}
+//}

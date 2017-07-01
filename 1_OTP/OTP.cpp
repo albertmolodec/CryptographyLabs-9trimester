@@ -103,7 +103,7 @@ int main()
 		{
 			workplace.Key_Generator(plaintext, plaintext_path, key, key_path);
 			bool plaintext_check = false;
-			plaintext_check = File_Exists(plaintext_path.c_str());
+			plaintext_check = MyFile::File_Exists(plaintext_path.c_str());
 			if (!plaintext_check)
 			{
 			}
@@ -117,7 +117,7 @@ int main()
 		else if (mode == 2)
 		{
 			bool ciphertext_check = false;
-			ciphertext_check = File_Exists(ciphertext_path.c_str());
+			ciphertext_check = MyFile::File_Exists(ciphertext_path.c_str());
 			if (!ciphertext_check)
 			{
 				Clear_Screen();
