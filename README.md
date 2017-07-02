@@ -28,3 +28,6 @@ SOURCES
 9_Entropy:
   1) How to create a Zip file from existing files: https://www.codeproject.com/articles/7530/zip-utils-clean-elegant-simple-c-win
   2) Convert string to TCHAR*: http://www.cplusplus.com/forum/general/12245/
+
+11_HashTable: 
+  1) File attributes list: http://www.vsokovikov.narod.ru/New_MSDN_API/Menage_files/fn_getfileattributes.htm.
