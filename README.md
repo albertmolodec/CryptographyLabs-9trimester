@@ -32,3 +32,5 @@ SOURCES
 11_HashTable: 
   1) File attributes list: http://www.vsokovikov.narod.ru/New_MSDN_API/Menage_files/fn_getfileattributes.htm
   2) How to get attributes of file: http://www.cyberforum.ru/cpp-beginners/thread633547.html
+  3) Convert FILETIME to string: http://rextester.com/DDL72539
+ 
