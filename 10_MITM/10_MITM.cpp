@@ -130,6 +130,7 @@ int main()
 	int begin_time;
 	int end_time;
 
+
 	// open file with plain text
 	MyFile plainfile;
 	std::string plainfile_path = "../shared/plaintext.txt";
@@ -157,13 +158,13 @@ int main()
 	Full_Print(ciphertext, "Cipher text");
 
 
-	begin_time = clock();
 	// generate array of keys
+	begin_time = clock();
 	Clear_Screen();
-	std::cout << "Attack on 2DES with using of MITM in progress..." << std::endl << "Number of threads: 8" << std::endl;
+	std::cout << "Attack on 2DES with using of MITM in progress..." << std::endl << std::endl;
 	std::cout << "Keys are generating...";
 	std::vector<std::vector <unsigned char>> keys;
-	int keys_count = 262144; // 2^18
+	int keys_count = pow(2, 20);
 	std::vector <unsigned char> next_key = key_abs;
 	for (int i = 0; i < keys_count; i++)
 	{
@@ -174,7 +175,7 @@ int main()
 
 	// split keys
 	Clear_Screen();
-	std::cout << "Attack on 2DES with using of MITM in progress..." << std::endl << "Number of threads: 8" << std::endl << "Number of analysing keys: " << keys_count << std::endl;
+	std::cout << "Attack on 2DES with using of MITM in progress..." << std::endl << "Number of analysing keys: " << keys_count << std::endl;
 	std::cout << "Keys are spliting...";
 	std::vector<std::vector <unsigned char>> left_keys;
 	std::vector<std::vector <unsigned char>> right_keys;
@@ -184,57 +185,48 @@ int main()
 	{
 		Split_Key(keys[i], left_keys[i], right_keys[i], key_size);
 	}
-	
-	
+
+
 	// create pair tables
 	Clear_Screen();
 	std::map <std::vector <unsigned char>, std::vector <unsigned char>> e;
 	std::map <std::vector <unsigned char>, std::vector <unsigned char>> d;
-	std::cout << "Attack on 2DES with using of MITM in progress..." << std::endl << "Number of threads: 8" << std::endl << "Number of analysing keys: " << keys_count << std::endl;
-	std::thread *thr = new std::thread[8];
-	for (int i = 0; i < 8; i++)
+	int threads_count =16;
+	std::cout << "Attack on 2DES with using of MITM in progress..." << std::endl << "Number of threads: " << threads_count << std::endl << "Number of analysing keys: " << keys_count << std::endl;
+	std::thread *thr = new std::thread[threads_count];
+	for (int i = 0; i < threads_count; i++)
 	{
-		thr[i] = std::thread(Create_Tables, std::ref(plaintext), std::ref(ciphertext), std::ref(e), std::ref(d), std::ref(left_keys), std::ref(right_keys), keys_count / 8 * i, keys_count / 8 * (i+1));
+		thr[i] = std::thread(Create_Tables, std::ref(plaintext), std::ref(ciphertext), std::ref(e), std::ref(d), std::ref(left_keys), std::ref(right_keys), keys_count / threads_count * i, keys_count / threads_count * (i + 1));
 	}
 	std::cout << "A table is creating..." << std::endl;
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < threads_count; i++)
 	{
 		thr[i].join();
 	}
 	end_time = clock();
 
-	
-	// search in tables 
-	std::vector<byte> findLeft;
-	std::vector<byte> findRight;
 
-	bool search = false;
-	for (auto item_e : e)
+	// search in tables 
+	std::vector<byte> correct_key_left;
+	std::vector<byte> correct_key_right;
+
+	for (auto iter_e : e)
 	{
-		for (auto item_d : d)
+		for (auto iter_d : d)
 		{
-			if (item_e.second == item_d.second)
+			if (iter_e.second == iter_d.second)
 			{
-				search = true;
-				findLeft = item_e.first;
-				findRight = item_d.first;
+				correct_key_left = iter_e.first;
+				correct_key_right = iter_d.first;
+				Clear_Screen();
+				std::string process_time = std::to_string(Get_Time(begin_time, end_time));
+				decryptedtext = Decryption(Decryption(ciphertext, correct_key_right), correct_key_left);
+				std::cout << "Attack on 2DES with using of MITM is completed." << std::endl << "Number of threads: " << threads_count << std::endl << "Number of analysing keys: " << keys_count << std::endl;
+				Full_Print(decryptedtext, "Decrypted text");
+				std::cout << "Process time = " << process_time << " seconds." << std::endl;
 				break;
 			}
 		}
-	}
-
-	Clear_Screen();
-	std::string process_time = std::to_string(Get_Time(begin_time, end_time));
-	decryptedtext = Decryption(Decryption(ciphertext, findRight), findLeft);	
-	if (!search)
-	{
-		std::cout << "Process time = " << process_time << " seconds. Key in this range is not found. " << std::endl;
-	}
-	else
-	{
-		std::cout << "Attack on 2DES with using of MITM is completed." << std::endl << "Number of threads: 8" << std::endl << "Number of analysing keys: " << keys_count << std::endl;
-		Full_Print(decryptedtext, "Decrypted text");
-		std::cout << "Process time = " << process_time << " seconds." << std::endl;
 	}
 
 	system("pause");
