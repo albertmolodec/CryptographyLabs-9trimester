@@ -30,4 +30,5 @@ SOURCES
   2) Convert string to TCHAR*: http://www.cplusplus.com/forum/general/12245/
 
 11_HashTable: 
-  1) File attributes list: http://www.vsokovikov.narod.ru/New_MSDN_API/Menage_files/fn_getfileattributes.htm.
+  1) File attributes list: http://www.vsokovikov.narod.ru/New_MSDN_API/Menage_files/fn_getfileattributes.htm
+  2) How to get attributes of file: http://www.cyberforum.ru/cpp-beginners/thread633547.html
