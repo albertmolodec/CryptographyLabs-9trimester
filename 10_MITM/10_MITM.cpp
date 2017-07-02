@@ -209,7 +209,6 @@ int main()
 	// search in tables 
 	std::vector<byte> correct_key_left;
 	std::vector<byte> correct_key_right;
-
 	for (auto iter_e : e)
 	{
 		for (auto iter_d : d)

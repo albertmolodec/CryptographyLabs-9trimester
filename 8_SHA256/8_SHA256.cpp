@@ -18,7 +18,7 @@ public:
 	void Generate_Hash_SHA256()
 	{
 		std::cout << "Hash is generating..." << std::endl;
-		Open_Message(plaintext, plaintext_path);
+		MyFile::Open_Message(plaintext, plaintext_path);
 
 		int plain_size = plaintext.GetData().size();
 		std::string str_plain = "";
@@ -39,7 +39,7 @@ public:
 		}
 
 		Clear_Screen();
-		Write_Message(hash, hash_path, "SHA256 file");
+		MyFile::Write_Message(hash, hash_path, "SHA256 file");
 	}
 
 
