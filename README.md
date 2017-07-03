@@ -37,4 +37,5 @@ SOURCES
   
 12_DiffieHellman:
   1) Sockets: http://club.shelek.ru/viewart.php?id=35
+  2) Sockets[2]: https://code-live.ru/post/cpp-http-server-over-sockets/
  
