@@ -9,6 +9,7 @@
 #include "..\third-party\src\CryptoPP\base64.h"
 #include "..\third-party\src\CryptoPP\hex.h"
 #include <direct.h>
+#include <fstream>
 
 
 #define FILE_ATTRIBUTE_READONLY             0x00000001
@@ -19,9 +20,9 @@
 #define FILE_ATTRIBUTE_TEMPORARY            0x00000100
 #define FILE_ATTRIBUTE_COMPRESSED           0x00000800
 #define FILE_ATTRIBUTE_ENCRYPTED            0x00004000 
-#define STRLEN(x) (sizeof(x)/sizeof(x[0]) - 1)
 
 void Print(std::vector<unsigned char> &text);
+int Invert_Type(int type);
 
 
 class aFile
@@ -187,7 +188,7 @@ public:
 class Hash
 {
 private:
-	int block_size = 16;
+	int block_size = 2;
 	std::string str_plain;
 	std::vector<unsigned char> hash;
 	aFile current_file;
@@ -226,110 +227,189 @@ public:
 			bytes_plain.push_back(str_plain[i]);
 		}
 
-		bytes_plain.resize(block_size);
-
-		for (int i = 0; i < block_size; i++)
+		for (int i = 0; i < bytes_plain.size(); i++)
 		{
 			unsigned char perem = i << 2;
-			int plain_index = i % block_size;
-			iv.push_back(bytes_plain[plain_index] * perem + 17);
+			int plain_index = i % bytes_plain.size();
+			iv.push_back(bytes_plain[plain_index] * perem + 17 * i - perem * 3);
 		}
 
-		for (int i = 0; i < block_size; i++)
-		{
-			hash.push_back((iv[i]) ^ (i << 5) >> 2);
-		}
-
-		if (bytes_plain.size() > block_size)
-		{
-			for (int i = 0; i < bytes_plain.size(); i++)
-			{
-				hash[i % block_size] ^= bytes_plain[i];
-			}
-		}
-		else
-		{
-			for (int i = 0; i < block_size; i++)
-			{
-				hash[i] ^= bytes_plain[i % bytes_plain.size()];
-			}
-		}
+		hash.push_back(iv[iv.size() - 9]);
+		hash.push_back((bytes_plain[bytes_plain.size() - 5] * 63) % 256);
 
 		return hash;
 	}
 
-	void Create_Table(std::vector<std::vector<aFile>> &hash_table, std::string path, int func_type, int i, int j, float alpha)
+	void Create_Table(std::vector<std::vector<aFile>> &hash_table, std::string path, int func_type, float alpha_max, int &number_of_files)
 	{
 		WIN32_FIND_DATAA folder_data;
 		HANDLE hf;
-
-
-
 		hf = FindFirstFile((path + "\\*").c_str(), &folder_data);
 
 		if (hf == INVALID_HANDLE_VALUE)
 		{
 			return;
 		}
-		else
+
+		do
 		{
-			do
+			char buff[sizeof(folder_data.cFileName)];
+			sprintf(buff, "%s", folder_data.cFileName);
+			std::string name = std::string(buff);
+
+			if (folder_data.dwFileAttributes && FILE_ATTRIBUTE_DIRECTORY)
 			{
-				if (current_file.Is_Directory())
+				if (name != "." && name != "..")
 				{
-					Create_Table(hash_table, path + "\\", func_type, i, j, alpha);
+					Create_Table(hash_table, path + "\\" + name, func_type, alpha_max, number_of_files);
 				}
+			}
 
-			} while (FindNextFileA(hf, &folder_data)); //&& (((float)i / j) < alpha));
-			FindClose(hf);
-		}
+			current_file.Fill_aFile(current_file, path + "\\" + name);
+			str_plain = current_file.Get_Full_Attr();
+			if (func_type == 1)
+			{
+				Generate_Hash_SHA256(str_plain);
+			}
+			else if (func_type == 2)
+			{
+				Generate_Hash_My(str_plain);
+			}
+
+			hash_table[Byte2_To_Int(hash, block_size)].push_back(current_file);
+			number_of_files++;
+
+		} while (FindNextFileA(hf, &folder_data)); //&& (Average(hash_table) < alpha_max));
+
+		FindClose(hf);
+
 	}
 
-	void first(std::string path, int func_type)
+	int Byte2_To_Int(std::vector<unsigned char> &text, int block_size)
 	{
-		current_file.Fill_aFile(current_file, path);
-		str_plain = current_file.Get_Full_Attr();
-		if (func_type == 1)
+		int integer = 0;
+		for (int i = 0; i < block_size; i++)
 		{
-			Generate_Hash_SHA256(str_plain);
+			integer += text[i] * pow(256, block_size - i - 1);
 		}
-		else if (func_type == 2)
-		{
-			Generate_Hash_My(str_plain);
-		}
-
-		std::cout << str_plain << std::endl;
+		return integer;
 	}
 
+	float Average(std::vector<std::vector<aFile>> &hash_table)
+	{
+		float sum = 0;
+		int rows_count = 0;
+		for (int i = 0; i < hash_table.size(); i++)
+		{
+			if (!hash_table[i].empty())
+			{
+				sum += hash_table[i].size();
+				rows_count++;
+			}
+		}
+		return sum / rows_count;
+	}
 
+	int Rows_Count(std::vector<std::vector<aFile>> &hash_table)
+	{
+		int rows_count = 0;
+		for (int i = 0; i < hash_table.size(); i++)
+		{
+			if (!hash_table[i].empty())
+			{
+				rows_count++;
+			}
+		}
+		return rows_count;
+	}
+
+	void Save_Table(std::vector<std::vector<aFile>> &hash_table)
+	{
+		std::ofstream f;
+		f.open("..\\shared\\HashTable.txt");
+		for (int i = 0; i < hash_table.size(); i++)
+		{
+			if (!hash_table[i].empty())
+			{
+				f << i << " ";
+				for each (aFile file in hash_table[i])
+				{
+					f << file.Get_Path() << " ";
+				}
+				f << "\n\n\n";
+			}
+		}
+		f.close();
+	}
 
 };
 
 
 
 
+
+
 int main()
 {
+	int begin_time;
+	int end_time;
+
 	aFile obj;
 	Hash obj_hash;
-	std::string root = "E:\\new";
+	std::string root = "C:\\Windows\\System32";
 	std::vector<std::vector<aFile>> hash_table;
 	hash_table.resize(65536);
 	obj.Fill_aFile(obj, root);
+	obj.Get_Full_Attr();
 	int func_type = 1;
-
+	int number_of_files = 0;
+	float alpha_max = 2.5;
+	bool answer = true;
+	std::string answer_str;
 
 	std::cout << "Select hash function type: 1 - SHA256, 2 - Albert Molodec's." << std::endl;
 	std::cin >> func_type;
 	Clear_Screen();
 
-	obj_hash.first(root, func_type);
-	obj_hash.Create_Table(hash_table, root, func_type, 0, 0, 1.3);
+	while (answer)
+	{
+		std::cout << "Root directory attributes: \n ___________________\n";
+		obj.Print_Attributes();
 
 
-	//std::cout << "Plain text: " << obj.Get_Full_Attr();
-	//std::cout << std::endl;
-	//obj.Print_Attributes();
+		begin_time = clock();
+		std::cout << "\nAlpha max: " << alpha_max << std::endl;
+
+		std::cout << "Hash table is creating..." << std::endl;
+		obj_hash.Create_Table(hash_table, root, func_type, alpha_max, number_of_files);
+		end_time = clock();
+		std::string process_time = std::to_string(Get_Time(begin_time, end_time));
+		Clear_Screen();
+		std::cout << "Hash table is created. Process time: " << process_time << std::endl;
+		std::cout << "Rows count: " << obj_hash.Rows_Count(hash_table) << "/" << hash_table.size() << std::endl;
+		std::cout << "Average alpha: " << obj_hash.Average(hash_table) << std::endl;
+		std::cout << "Number of files: " << number_of_files << std::endl;
+
+
+		if (obj_hash.Average(hash_table) > alpha_max)
+		{
+			std::cout << "Average alpha is more than alpha max. Do you want to rebuild table with another hash function? (Y/N)" << std::endl;
+			std::cin >> answer_str;
+			if (answer_str == "Y")
+			{
+				func_type =	Invert_Type(func_type);
+				answer = true;
+			}
+			else 
+			{
+				answer = false;
+			}
+		}
+		Clear_Screen();
+	}
+
+	obj_hash.Save_Table(hash_table);
+	std::cout << "Table is saved in shared\\HashTable.txt"  << std::endl;
 
 	system("pause");
 	return 0;
@@ -344,7 +424,13 @@ int main()
 
 
 
-
+int Invert_Type(int type)
+{
+	if (type == 1)
+		return 0;
+	if (type == 0)
+		return 1;
+}
 
 
 void Print(std::vector<unsigned char> &text)

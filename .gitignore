@@ -297,3 +297,6 @@ shared/key.*
 shared/iv.*
 shared/key
 shared/iv
+third-party/src/mpir-2.7.2*/
+third-party/src/mpir-3.0.0*/
+MyCry.VC.db

@@ -131,7 +131,6 @@ int main()
 	int end_time;
 
 
-	// open file with plain text
 	MyFile plainfile;
 	std::string plainfile_path = "../shared/plaintext.txt";
 	std::vector <unsigned char> plaintext;
@@ -145,7 +144,6 @@ int main()
 	Full_Print(plaintext, "Plain text");
 
 
-	// generate abs key and cipher my plain text
 	std::vector <unsigned char> key_abs;
 	std::vector <unsigned char> left_key_abs;
 	std::vector <unsigned char> right_key_abs;
@@ -158,13 +156,12 @@ int main()
 	Full_Print(ciphertext, "Cipher text");
 
 
-	// generate array of keys
 	begin_time = clock();
 	Clear_Screen();
 	std::cout << "Attack on 2DES with using of MITM in progress..." << std::endl << std::endl;
 	std::cout << "Keys are generating...";
 	std::vector<std::vector <unsigned char>> keys;
-	int keys_count = pow(2, 20);
+	int keys_count = pow(2, 16);
 	std::vector <unsigned char> next_key = key_abs;
 	for (int i = 0; i < keys_count; i++)
 	{
@@ -173,9 +170,8 @@ int main()
 	}
 
 
-	// split keys
 	Clear_Screen();
-	std::cout << "Attack on 2DES with using of MITM in progress..." << std::endl << "Number of analysing keys: " << keys_count << std::endl;
+	std::cout << "Attack on 2DES with using of MITM in progress..." << std::endl << "Count of analysing keys: " << keys_count << std::endl;
 	std::cout << "Keys are spliting...";
 	std::vector<std::vector <unsigned char>> left_keys;
 	std::vector<std::vector <unsigned char>> right_keys;
@@ -187,12 +183,11 @@ int main()
 	}
 
 
-	// create pair tables
 	Clear_Screen();
 	std::map <std::vector <unsigned char>, std::vector <unsigned char>> e;
 	std::map <std::vector <unsigned char>, std::vector <unsigned char>> d;
-	int threads_count =16;
-	std::cout << "Attack on 2DES with using of MITM in progress..." << std::endl << "Number of threads: " << threads_count << std::endl << "Number of analysing keys: " << keys_count << std::endl;
+	int threads_count = 4;
+	std::cout << "Attack on 2DES with using of MITM in progress..." << std::endl  << "Count of analysing keys: " << keys_count << std::endl << "Count of threads: " << threads_count << std::endl;
 	std::thread *thr = new std::thread[threads_count];
 	for (int i = 0; i < threads_count; i++)
 	{
@@ -206,7 +201,6 @@ int main()
 	end_time = clock();
 
 
-	// search in tables 
 	std::vector<byte> correct_key_left;
 	std::vector<byte> correct_key_right;
 	for (auto iter_e : e)
@@ -220,7 +214,12 @@ int main()
 				Clear_Screen();
 				std::string process_time = std::to_string(Get_Time(begin_time, end_time));
 				decryptedtext = Decryption(Decryption(ciphertext, correct_key_right), correct_key_left);
-				std::cout << "Attack on 2DES with using of MITM is completed." << std::endl << "Number of threads: " << threads_count << std::endl << "Number of analysing keys: " << keys_count << std::endl;
+				std::cout << "Attack on 2DES with using of MITM is completed." << std::endl << "Count of threads: " << threads_count << std::endl << "Count of analysing keys: " << keys_count << std::endl << std::endl;
+				Full_Print(plaintext, "Plain text");
+				std::cout << "Key: ";
+				Print(correct_key_left);
+				Print(correct_key_right);
+				std::cout << std::endl;
 				Full_Print(decryptedtext, "Decrypted text");
 				std::cout << "Process time = " << process_time << " seconds." << std::endl;
 				break;
