@@ -34,4 +34,7 @@ SOURCES
   2) How to get attributes of file: http://www.cyberforum.ru/cpp-beginners/thread633547.html
   3) Convert FILETIME to string: http://rextester.com/DDL72539
   4) Recursive search: http://eax.me/winapi-file-search/
+  
+12_DiffieHellman:
+  1) Sockets: http://club.shelek.ru/viewart.php?id=35
  
