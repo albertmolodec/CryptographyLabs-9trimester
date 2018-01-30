@@ -1,6 +1,23 @@
-# MyCry
+# Cryptography labs
 
-SOURCES
+*There are the results of my lab works on cryptographic protocols and standards in the summer of 2017.*
+
+I realized the following algorithms:
+1. One-Time Pad
+2. DES
+3. AES
+4. RC4
+5. RSA
+6. Hash-Table
+7. SHA256
+8. Entropy calculation
+9. Meet-In-The-Middle attack on 2DES
+10. Diffie-Hellman key exhange
+
+I used C++ with static library Crypto++ (cryptography algorithms) and MPIR (work with long numbers) for this.
+
+
+#SOURCES
 
 1_OTP:
   1) ClearConsole using WIN API (System() is evil!):  http://www.cplusplus.com/articles/4z18T05o/
