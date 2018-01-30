@@ -17,7 +17,7 @@ I realized the following algorithms:
 I used C++ with static library Crypto++ (cryptography algorithms) and MPIR (work with long numbers) for this.
 
 
-#SOURCES
+## SOURCES
 
 1_OTP:
   1) ClearConsole using WIN API (System() is evil!):  http://www.cplusplus.com/articles/4z18T05o/
